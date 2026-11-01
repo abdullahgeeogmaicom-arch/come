@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="day">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Long Game — A Reader's History of Cricket</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   THE LONG GAME — an almanac of cricket history
+   Palette: warm paper, iron ink, cherry red (the ball), pitch green
+   ============================================================ */
+:root{
+  --paper:#F3EEE1;
+  --paper-2:#EAE3D1;
+  --ink:#1D1912;
+  --ink-2:#59523F;
+  --line:rgba(29,25,18,.16);
+  --line-strong:rgba(29,25,18,.55);
+  --red:#A62B1F;
+  --red-soft:rgba(166,43,31,.10);
+  --green:#33523B;
+  --pink:#F08FB4;
+  --serif:'Fraunces',Georgia,serif;
+  --body:'Newsreader',Georgia,serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+[data-theme="night"]{
+  --paper:#14110C;
+  --paper-2:#1C1811;
+  --ink:#EAE2CE;
+  --ink-2:#A89E86;
+  --line:rgba(234,226,206,.15);
+  --line-strong:rgba(234,226,206,.5);
+  --red:#DE5646;
+  --red-soft:rgba(222,86,70,.12);
+  --green:#8CAF8C;
+  --pink:#F08FB4;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){ html{scroll-behavior:smooth} }
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:18px;
+  line-height:1.72;
+  transition:background-color .5s ease,color .5s ease;
+  overflow-x:hidden;
+}
+/* faint paper grain */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+}
+[data-theme="night"] body::before{opacity:.07}
+::selection{background:var(--red);color:var(--paper)}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.12;color:var(--ink)}
+a{color:inherit}
+button{font-family:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.wrap{max-width:1020px;margin:0 auto;padding:0 36px;position:relative;z-index:1}
+
+/* ---------- small caps & mono labels ---------- */
+.tag{
+  font-family:var(--mono);font-size:.68rem;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2);
+}
+.tag.red{color:var(--red)}
+.tag.green{color:var(--green)}
+
+/* ---------- heavy almanac double rule ---------- */
+.rule-heavy{height:6px;border-top:2px solid var(--line-strong);border-bottom:1px solid var(--line-strong);margin:0}
+
+/* ---------- reading progress (the pitch) ---------- */
+#progress{
+  position:fixed;top:0;left:0;height:3px;width:0;
+  background:var(--red);z-index:80;transition:width .1s linear;
+}
+#progress::after{
+  content:"";position:absolute;right:-4px;top:50%;transform:translateY(-50%);
+  width:9px;height:9px;border-radius:50%;background:var(--red);
+}
+
+/* ---------- side rail: the red ball travels down the page ---------- */
+.rail{display:none}
+@media (min-width:1180px){
+  .rail{display:block;position:fixed;left:22px;top:0;bottom:0;z-index:70}
+  .rail-track{position:absolute;top:16vh;height:68vh;width:0}
+  .rail-line{position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--line-strong)}
+  .rail-fill{position:absolute;left:0;top:0;width:1px;background:var(--red);height:0}
+  .rail-ball{
+    position:absolute;left:0;top:0;width:13px;height:13px;border-radius:50%;
+    background:var(--red);transform:translate(-50%,-50%);
+    box-shadow:0 0 0 4px var(--paper);transition:top .12s linear;
+  }
+  .stop{
+    position:absolute;left:0;transform:translate(-50%,-50%);
+    width:16px;height:16px;background:none;border:none;cursor:pointer;padding:0;
+  }
+  .stop i{
+    display:block;width:7px;height:7px;border-radius:50%;background:var(--paper);
+    border:1.5px solid var(--line-strong);transition:all .25s;margin:0 auto;
+  }
+  .stop:hover i,.stop.active i{background:var(--red);border-color:var(--red);transform:scale(1.5)}
+  .stop .tip{
+    position:absolute;left:20px;top:50%;transform:translate(-6px,-50%);
+    background:var(--paper);border:1px solid var(--line-strong);
+    font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+    padding:4px 9px;white-space:nowrap;opacity:0;pointer-events:none;transition:all .25s;
+  }
+  .stop:hover .tip,.stop:focus-visible .tip,.stop.active .tip{opacity:1;transform:translate(0,-50%)}
+}
+
+/* ============================================================
+   MASTHEAD
+   ============================================================ */
+.masthead{padding:26px 0 0}
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;
+  padding-bottom:14px;border-bottom:1px solid var(--line);flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand svg{width:20px;height:24px;flex:none}
+.mast-center{text-align:center;padding:44px 0 34px}
+.kicker{display:block;margin-bottom:18px}
+.mast-title{
+  font-size:clamp(3.1rem,9vw,7.4rem);font-weight:420;
+  letter-spacing:.015em;line-height:.95;text-transform:uppercase;
+  font-variation-settings:"opsz" 144;
+}
+.mast-title b{color:var(--red);font-weight:420}
+.mast-sub{
+  font-style:italic;font-size:clamp(1.02rem,2vw,1.28rem);color:var(--ink-2);
+  max-width:44ch;margin:22px auto 0;
+}
+
+/* day / night switch — the ball turns pink for the night match */
+.switch{
+  display:inline-flex;align-items:center;gap:11px;cursor:pointer;
+  background:none;border:1px solid var(--line-strong);border-radius:999px;
+  padding:8px 16px 8px 12px;transition:border-color .25s;
+}
+.switch:hover{border-color:var(--red)}
+.sw-track{width:34px;height:18px;border:1px solid var(--line-strong);border-radius:999px;position:relative;flex:none}
+.sw-knob{
+  position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;
+  background:var(--red);transition:transform .35s ease,background-color .35s ease;
+}
+[data-theme="night"] .sw-knob{transform:translateX(16px);background:var(--pink)}
+.sw-label{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
+
+/* hero: intro + contents on the left, ball plate on the right */
+.hero-grid{
+  display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);
+  gap:56px;align-items:start;padding:46px 0 52px;
+}
+.prose p{color:var(--ink-2);max-width:64ch}
+.prose p + p{margin-top:1em}
+.prose strong{color:var(--ink);font-weight:600}
+.prose em{font-style:italic}
+.dropcap>p:first-child::first-letter{
+  font-family:var(--serif);font-weight:900;color:var(--red);
+  font-size:4.7em;line-height:.76;float:left;margin:.05em .14em 0 -.02em;
+}
+.readtime{margin-top:26px;padding-top:14px;border-top:1px solid var(--line)}
+
+/* contents with dotted leaders */
+.toc{margin-top:34px}
+.toc-title{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.toc-title::after{content:"";flex:1;border-top:1px solid var(--line)}
+.toc a{
+  display:flex;align-items:baseline;gap:10px;text-decoration:none;padding:4.5px 0;
+}
+.toc a:hover .t{color:var(--red)}
+.toc .n{font-family:var(--mono);font-size:.72rem;color:var(--red);letter-spacing:.08em;min-width:34px}
+.toc .t{font-family:var(--serif);font-size:1.02rem;transition:color .2s}
+.toc .ld{flex:1;border-bottom:1px dotted var(--line-strong);transform:translateY(-4px)}
+.toc .y{font-family:var(--mono);font-size:.7rem;color:var(--ink-2);letter-spacing:.06em}
+
+/* hero plate — engraved ball over a wagon wheel */
+.plate{border:1px solid var(--line-strong);outline:1px solid var(--line-strong);outline-offset:5px;padding:18px;cursor:pointer}
+.plate svg{width:100%;height:auto;display:block}
+.plate figcaption{
+  margin-top:14px;padding-top:12px;border-top:1px solid var(--line);
+  text-align:center;font-family:var(--mono);font-size:.62rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2);
+}
+#wheel{animation:slowspin 200s linear infinite;transform-box:view-box;transform-origin:50% 50%}
+#ballSpin{transition:transform 1.5s cubic-bezier(.15,.85,.25,1);transform-box:view-box;transform-origin:50% 50%;cursor:pointer}
+#ballTurn{animation:slowspin 70s linear infinite reverse;transform-box:view-box;transform-origin:50% 50%}
+@keyframes slowspin{to{transform:rotate(360deg)}}
+.wheel line{stroke:var(--ink);opacity:.12;stroke-width:1.2}
+.ring{fill:none;stroke:var(--ink);opacity:.28;stroke-width:1.4}
+.ring.dash{stroke-dasharray:4 7;opacity:.22}
+.ball-stitch{fill:none;stroke:var(--paper);stroke-width:2.4;stroke-linecap:round}
+.ball-seam{fill:none;stroke:var(--red-deep,#7E1F16);stroke-width:2.4}
+[data-theme="night"] .ball-seam{stroke:#8E241B}
+.ball-gloss{fill:none;stroke:var(--paper);stroke-width:5;opacity:.28;stroke-linecap:round}
+
+/* ============================================================
+   CHAPTERS
+   ============================================================ */
+main{position:relative;z-index:1}
+.chapter{
+  position:relative;border-top:1px solid var(--line);
+  padding:88px 0 96px;scroll-margin-top:72px;
+}
+.chapter::before{ /* little red fleuron on the rule */
+  content:"";position:absolute;top:-4px;left:50%;
+  width:8px;height:8px;background:var(--red);transform:rotate(45deg) translateX(-50%);
+  outline:8px solid var(--paper);
+}
+.ch-head{display:flex;align-items:flex-end;gap:34px;margin-bottom:44px;flex-wrap:wrap}
+.ch-no{
+  font-family:var(--serif);font-weight:900;line-height:.8;
+  font-size:clamp(5rem,10vw,8.6rem);
+  color:transparent;-webkit-text-stroke:1.6px var(--ink);
+  font-variation-settings:"opsz" 144;flex:none;
+}
+@supports not (-webkit-text-stroke:1px black){ .ch-no{color:var(--ink);opacity:.18} }
+.ch-era{display:block;margin-bottom:12px}
+.ch-head h2{font-size:clamp(1.9rem,3.6vw,3rem);font-weight:520;max-width:16ch}
+.ch-grid{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:20px 64px}
+.prose{grid-column:1}
+.note{grid-column:2;grid-row:1 / span 12;align-self:start}
+.ch-grid>.quote,.ch-grid>.file,.ch-grid>.clipping{grid-column:1}
+
+/* marginalia */
+.note{border-top:1px solid var(--line-strong);padding-top:12px}
+.note .nb{display:block;font-family:var(--mono);font-size:.62rem;letter-spacing:.22em;color:var(--red);margin-bottom:8px}
+.note p{font-size:.94rem;font-style:italic;color:var(--ink-2);line-height:1.62}
+.note p + p{margin-top:.7em}
+
+/* pull quote */
+.quote{border-left:3px solid var(--red);padding:8px 0 8px 30px;margin:42px 0 0}
+.quote blockquote{
+  font-family:var(--serif);font-style:italic;font-weight:440;
+  font-size:clamp(1.45rem,2.6vw,1.95rem);line-height:1.35;color:var(--ink);
+}
+.quote figcaption{margin-top:16px;font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
+
+/* the 1882 obituary clipping */
+.clipping{
+  margin:52px auto 0;max-width:520px;text-align:center;
+  border:1.5px solid var(--ink);outline:1px solid var(--ink);outline-offset:5px;
+  padding:34px 30px 26px;background:var(--paper);
+}
+.clipping .cl-open{font-style:italic;color:var(--ink-2);font-size:.98rem}
+.clipping .cl-name{font-family:var(--serif);font-weight:800;font-size:1.7rem;letter-spacing:.06em;margin:6px 0}
+.clipping .cl-which{font-style:italic;color:var(--ink-2);font-size:.98rem}
+.clipping .cl-body{margin-top:14px;font-size:.98rem;color:var(--ink-2)}
+.clipping .cl-rip{font-family:var(--serif);font-weight:700;letter-spacing:.3em;margin-top:14px}
+.clipping .cl-nb{margin-top:12px;font-size:.95rem}
+.clipping .cl-src{margin-top:18px;padding-top:12px;border-top:1px solid var(--line);font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;color:var(--ink-2);text-transform:uppercase}
+
+/* player file — almanac entry */
+.file{border-top:2px solid var(--ink);margin-top:46px;max-width:560px;padding-top:16px}
+.file h4{font-size:1.45rem;font-weight:600}
+.file .fc{font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin:6px 0 14px}
+.frow{display:flex;align-items:baseline;gap:10px;padding:5px 0}
+.frow span{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;color:var(--ink-2)}
+.frow .ld{flex:1;border-bottom:1px dotted var(--line-strong);transform:translateY(-4px)}
+.frow b{font-family:var(--mono);font-size:.86rem;font-weight:600}
+.fnote{margin-top:14px;font-style:italic;font-size:.95rem;color:var(--ink-2)}
+
+/* mobile: marginalia become inline asides */
+@media (max-width:960px){
+  .ch-grid{grid-template-columns:1fr}
+  .note{grid-column:1;grid-row:auto;border-top:none;border-left:2px solid var(--red);padding:4px 0 4px 18px;margin-top:30px}
+  .hero-grid{grid-template-columns:1fr}
+  .ch-no{font-size:clamp(3.6rem,13vw,6rem)}
+}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ============================================================
+   INTERLUDE BANDS (darker paper)
+   ============================================================ */
+.interlude{
+  background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:84px 0 92px;scroll-margin-top:72px;transition:background-color .5s ease;
+}
+.interlude::before{content:"";display:block;width:9px;height:9px;background:var(--green);transform:rotate(45deg);margin:0 auto 26px}
+.int-head{text-align:center;margin-bottom:16px}
+.int-head .int-kicker{display:inline-flex;align-items:center;gap:12px;justify-content:center}
+.int-head h2{font-size:clamp(1.8rem,3.4vw,2.7rem);margin-top:14px}
+.int-lede{font-style:italic;color:var(--ink-2);max-width:58ch;margin:16px auto 0;text-align:center;font-size:1.05rem}
+
+/* ---------- THE CHASM: Test batting averages ---------- */
+.chart{--lblw:200px;--valw:78px;--gap:18px;position:relative;margin-top:56px}
+.chart .marker{
+  position:absolute;top:34px;bottom:6px;width:0;border-left:1.5px dashed var(--red);
+  left:calc(var(--lblw) + var(--gap) + (100% - var(--lblw) - var(--valw) - var(--gap)*2) * 0.6187);
+  opacity:0;transition:opacity .6s ease .9s;
+}
+.chart.in .marker{opacity:1}
+.marker .mtag{
+  position:absolute;bottom:calc(100% + 8px);left:0;transform:translateX(-50%);
+  background:var(--red);color:var(--paper);font-family:var(--mono);font-size:.6rem;
+  letter-spacing:.12em;padding:4px 9px;white-space:nowrap;text-transform:uppercase;
+}
+.crow{
+  display:grid;grid-template-columns:var(--lblw) 1fr var(--valw);gap:0 var(--gap);
+  align-items:center;margin-bottom:15px;
+}
+.crow .name{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);text-align:right}
+.crow .track{border-left:1px solid var(--line-strong);height:23px;position:relative}
+.crow .bar{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--ink);transition:width 1.15s cubic-bezier(.2,.7,.15,1)}
+.chart.in .crow .bar{width:var(--w)}
+.crow .val{font-family:var(--mono);font-size:.8rem;font-weight:600}
+.crow.hero-row .bar{background:var(--red)}
+.crow.hero-row .name,.crow.hero-row .val{color:var(--red);font-weight:600}
+.chart-note{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-style:italic;font-size:.94rem;color:var(--ink-2);text-align:center}
+@media (max-width:760px){
+  .chart{--lblw:104px;--valw:56px;--gap:12px}
+  .crow .name{font-size:.6rem}
+}
+
+/* ============================================================
+   APPENDIX A — CHRONOLOGY
+   ============================================================ */
+.appendix{padding:88px 0 96px;border-top:1px solid var(--line);position:relative;scroll-margin-top:72px}
+.appendix::before{content:"";position:absolute;top:-4px;left:50%;width:8px;height:8px;background:var(--ink);transform:rotate(45deg) translateX(-50%);outline:8px solid var(--paper)}
+.app-head{display:flex;align-items:center;gap:16px;margin-bottom:40px;flex-wrap:wrap}
+.app-head h2{font-size:clamp(1.5rem,2.8vw,2.1rem);white-space:nowrap}
+.app-head::after{content:"";flex:1;border-top:1px solid var(--line-strong);min-width:60px}
+.chron{columns:2;column-gap:64px}
+.chron-row{break-inside:avoid;display:flex;align-items:baseline;gap:10px;padding:6px 0}
+.chron .y{font-family:var(--mono);font-size:.76rem;font-weight:600;color:var(--red);min-width:52px}
+.chron .ev{font-size:.98rem;color:var(--ink-2)}
+.chron .ev b{color:var(--ink);font-weight:600}
+.chron .ld{flex:1;border-bottom:1px dotted var(--line);transform:translateY(-4px);min-width:14px}
+@media (max-width:820px){ .chron{columns:1} }
+
+/* ============================================================
+   APPENDIX B — THE LEDGER (animated counters)
+   ============================================================ */
+.ledger{max-width:820px;margin:52px auto 0}
+.lrow{display:grid;grid-template-columns:300px 1fr;gap:28px;align-items:baseline;padding:26px 0;border-top:1px solid var(--line)}
+.lrow:last-child{border-bottom:1px solid var(--line)}
+.lrow .num{
+  font-family:var(--serif);font-weight:750;font-size:clamp(2.4rem,5vw,3.9rem);
+  line-height:1;color:var(--red);font-variation-settings:"opsz" 144;
+}
+.lrow .what{font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);display:block;margin-bottom:6px}
+.lrow .who{font-size:.98rem;font-style:italic;color:var(--ink-2)}
+@media (max-width:700px){ .lrow{grid-template-columns:1fr;gap:6px} }
+.ledger-foot{margin-top:30px;text-align:center;font-style:italic;font-size:.95rem;color:var(--ink-2);max-width:62ch;margin-left:auto;margin-right:auto}
+
+/* ============================================================
+   POSTSCRIPT — THE FINAL OVER (quiz)
+   ============================================================ */
+.quiz-sec{padding:88px 0 100px;border-top:1px solid var(--line);position:relative;scroll-margin-top:72px}
+.quiz-sec::before{content:"";position:absolute;top:-4px;left:50%;width:8px;height:8px;background:var(--red);transform:rotate(45deg) translateX(-50%);outline:8px solid var(--paper)}
+.quiz{max-width:700px;margin:0 auto;border:1px solid var(--line-strong);padding:44px 44px 40px}
+.quiz-head{text-align:center;padding-bottom:26px;border-bottom:1px solid var(--line)}
+.quiz-head h2{font-size:clamp(1.7rem,3vw,2.3rem);margin-top:12px}
+.overline{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:18px}
+.od{width:11px;height:11px;border-radius:50%;border:1.5px solid var(--line-strong);transition:all .3s}
+.od.cur{border-color:var(--red);transform:scale(1.25)}
+.od.ok{background:var(--red);border-color:var(--red)}
+.od.bad{background:var(--ink-2);border-color:var(--ink-2);opacity:.45}
+.quiz-stage{min-height:330px;padding-top:30px}
+.q-count{margin-bottom:14px;display:block}
+.q-text{font-family:var(--serif);font-size:clamp(1.25rem,2.4vw,1.55rem);font-weight:520;line-height:1.3;margin-bottom:26px}
+.opts{display:grid;gap:10px}
+.opt{
+  text-align:left;background:none;border:1px solid var(--line-strong);
+  padding:13px 18px;font-size:1rem;cursor:pointer;display:flex;align-items:center;gap:12px;
+  transition:all .2s;font-family:var(--body);
+}
+.opt .k{font-family:var(--mono);font-size:.66rem;color:var(--red);flex:none}
+.opt:hover:not(:disabled){background:var(--ink);color:var(--paper)}
+.opt:hover:not(:disabled) .k{color:var(--paper)}
+.opt:disabled{cursor:default;opacity:.55}
+.opt.pick{opacity:1}
+.opt.good{border-color:var(--green);background:var(--red-soft);opacity:1;color:var(--ink)}
+.opt.badpick{border-color:var(--red);opacity:1}
+.opt svg{width:15px;height:15px;margin-left:auto;flex:none}
+.q-note{margin-top:20px;padding:14px 18px;border-left:2px solid var(--green);font-style:italic;font-size:.95rem;color:var(--ink-2);display:none}
+.q-note.show{display:block}
+.q-next{
+  margin-top:24px;display:none;background:none;border:1px solid var(--ink);
+  padding:12px 26px;font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;
+  text-transform:uppercase;cursor:pointer;transition:all .2s;
+}
+.q-next.show{display:inline-flex;align-items:center;gap:10px}
+.q-next:hover{background:var(--red);border-color:var(--red);color:var(--paper)}
+/* scorecard */
+.scorecard{text-align:center}
+.scorecard .sc-title{font-family:var(--mono);font-size:.64rem;letter-spacing:.26em;text-transform:uppercase;color:var(--red)}
+.sc-box{border:1.5px solid var(--ink);outline:1px solid var(--ink);outline-offset:4px;margin:22px auto 0;max-width:420px;padding:24px 26px;text-align:left}
+.sc-row{display:flex;align-items:baseline;gap:12px;padding:7px 0}
+.sc-row span{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;color:var(--ink-2);min-width:74px}
+.sc-row .ld{flex:1;border-bottom:1px dotted var(--line-strong);transform:translateY(-4px)}
+.sc-row b{font-family:var(--serif);font-size:1.06rem;font-weight:600}
+.sc-row b.red{color:var(--red)}
+.scorecard .sc-verdict{margin-top:22px;font-style:italic;color:var(--ink-2)}
+.scorecard .q-again{margin-top:20px;display:inline-flex}
+@media (max-width:640px){ .quiz{padding:30px 22px} }
+
+/* ============================================================
+   COLOPHON (inverted band — dark by day, light by night)
+   ============================================================ */
+footer{background:var(--ink);color:var(--paper);padding:64px 0;transition:background-color .5s ease,color .5s ease}
+footer .wrap{text-align:center}
+footer svg{width:26px;height:32px;margin-bottom:20px}
+footer svg line,footer svg rect{stroke:var(--paper)}
+.foot-title{font-family:var(--serif);font-size:1.5rem;font-weight:600;letter-spacing:.04em}
+.foot-meta{margin-top:14px;font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;opacity:.75}
+.foot-note{margin:18px auto 0;font-style:italic;font-size:.95rem;opacity:.8;max-width:52ch}
+.foot-up{
+  display:inline-flex;align-items:center;gap:10px;margin-top:28px;text-decoration:none;
+  border:1px solid var(--paper);padding:11px 24px;
+  font-family:var(--mono);font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;
+  transition:all .2s;opacity:.9;
+}
+.foot-up:hover{background:var(--paper);color:var(--ink)}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+  .chart.in .crow .bar{transition:none}
+}
+</style>
+</head>
+<body>
+
+<!-- inline icon sprite -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5.5 5.5L20 6.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-7l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-stumps" viewBox="0 0 24 30"><line x1="5" y1="7" x2="5" y2="27" stroke-width="2" stroke-linecap="round"/><line x1="12" y1="7" x2="12" y2="27" stroke-width="2" stroke-linecap="round"/><line x1="19" y1="7" x2="19" y2="27" stroke-width="2" stroke-linecap="round"/><rect x="3.5" y="3" width="7" height="2.4" stroke="none"/><rect x="12.8" y="3" width="7" height="2.4" stroke="none"/></symbol>
+</svg>
+
+<div id="progress" aria-hidden="true"></div>
+
+<!-- era rail: the red ball descends as you read -->
+<nav class="rail" aria-label="Eras of cricket history">
+  <div class="rail-track" id="railTrack">
+    <div class="rail-line"></div>
+    <div class="rail-fill" id="railFill"></div>
+    <div class="rail-ball" id="railBall"></div>
+    <!-- stops injected by script -->
+  </div>
+</nav>
+
+<!-- ================= MASTHEAD ================= -->
+<header class="masthead">
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <svg viewBox="0 0 24 30" aria-hidden="true"><use href="#i-stumps"/></svg>
+        <span class="tag">Vol. I · An Almanac of the Game</span>
+      </div>
+      <button class="switch" id="themeSwitch" role="switch" aria-checked="false" aria-label="Switch between day and night reading">
+        <span class="sw-track"><span class="sw-knob"></span></span>
+        <span class="sw-label" id="swLabel">Day match</span>
+      </button>
+    </div>
+
+    <div class="mast-center">
+      <span class="tag red kicker">A Reader's History of the Summer Game</span>
+      <h1 class="mast-title">The Long Game<b>.</b></h1>
+      <p class="mast-sub">Four hundred years of cricket, told in eight chapters, one interlude, one chasm and a final over.</p>
+    </div>
+
+    <div class="rule-heavy"></div>
+
+    <div class="hero-grid">
+      <div>
+        <div class="prose dropcap reveal in">
+          <p>Cricket is more than four hundred years old, has been played on every continent except Antarctica, and can take five days to decide nothing at all. It has survived puritans, wars, bodyline bowling and the television remote — and emerged from each, somehow, more itself.</p>
+          <p>This almanac tells its story from the shepherd's field to the floodlit age. Read it straight through, or follow the red ball down the rail at the edge of the page and drop in wherever you like. When dusk falls, turn on the floodlights above.</p>
+        </div>
+        <div class="readtime">
+          <span class="tag">Estimated reading time — <span id="readtime">—</span> minutes</span>
+        </div>
+        <nav class="toc" aria-label="Contents">
+          <div class="toc-title"><span class="tag red">Contents</span></div>
+          <a href="#origins"><span class="n">I</span><span class="t">In the beginning</span><span class="ld"></span><span class="y">1550–1700</span></a>
+          <a href="#laws"><span class="n">II</span><span class="t">Writing the Laws</span><span class="ld"></span><span class="y">1700–1800</span></a>
+          <a href="#empire"><span class="n">III</span><span class="t">Crossing oceans</span><span class="ld"></span><span class="y">1800–1900</span></a>
+          <a href="#golden"><span class="n">IV</span><span class="t">The Golden Age</span><span class="ld"></span><span class="y">1890–1914</span></a>
+          <a href="#don"><span class="n">V</span><span class="t">The Don &amp; the Bodyline storm</span><span class="ld"></span><span class="y">1928–1948</span></a>
+          <a href="#chasm"><span class="n">✳</span><span class="t">The Chasm — a statistical interlude</span><span class="ld"></span><span class="y">99.94</span></a>
+          <a href="#oneday"><span class="n">VI</span><span class="t">One-day thunder</span><span class="ld"></span><span class="y">1950–1979</span></a>
+          <a href="#world"><span class="n">VII</span><span class="t">The world takes over</span><span class="ld"></span><span class="y">1980–2000</span></a>
+          <a href="#otherhalf"><span class="n">✳</span><span class="t">The Other Half — the women's game</span><span class="ld"></span><span class="y">1745–</span></a>
+          <a href="#t20"><span class="n">VIII</span><span class="t">The T20 century</span><span class="ld"></span><span class="y">2003–today</span></a>
+          <a href="#chronology"><span class="n">A.</span><span class="t">A chronology of firsts</span><span class="ld"></span><span class="y">1598–2019</span></a>
+          <a href="#records"><span class="n">B.</span><span class="t">The ledger of records</span><span class="ld"></span><span class="y">—</span></a>
+          <a href="#finalover"><span class="n">✠</span><span class="t">The Final Over — a quiz</span><span class="ld"></span><span class="y">6 balls</span></a>
+        </nav>
+      </div>
+
+      <figure class="plate reveal" id="plate" tabindex="0" role="button" aria-label="Cricket ball illustration — press to spin it">
+        <svg viewBox="0 0 600 600" aria-hidden="true">
+          <!-- wagon wheel: faint shots to the boundary -->
+          <g class="wheel" id="wheel"></g>
+          <circle class="ring" cx="300" cy="300" r="252"/>
+          <circle class="ring dash" cx="300" cy="300" r="200"/>
+          <!-- the cherry -->
+          <g id="ballSpin">
+            <g id="ballTurn">
+              <circle cx="300" cy="300" r="118" fill="var(--red)"/>
+              <circle cx="300" cy="300" r="118" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
+              <path class="ball-seam" d="M 189 287 Q 300 341 411 287"/>
+              <path class="ball-seam" d="M 189 313 Q 300 367 411 313"/>
+              <path class="ball-stitch" d="M 189 300 Q 300 354 411 300" stroke-dasharray="6 8" opacity=".85"/>
+              <path class="ball-gloss" d="M 232 226 Q 268 202 312 202"/>
+            </g>
+          </g>
+        </svg>
+        <figcaption>Plate I · Wagon-wheel of a century — click the ball to turn it over</figcaption>
+      </figure>
+    </div>
+
+    <div class="rule-heavy"></div>
+  </div>
+</header>
+
+<main>
+  <!-- ================= CHAPTER I ================= -->
+  <section class="chapter" id="origins" data-rail="I — Origins" data-era="I">
+    <div class="wrap">
+      <header class="ch-head reveal">
+        <div class="ch-no">I</div>
+        <div class="ch-meta">
+          <span class="tag red ch-era">Chapter One · c. 1550 – 1700</span>
+          <h2>In the beginning, a shepherd's game</h2>
+        </div>
+      </header>
+      <div class="ch-grid">
+        <div class="prose dropcap reveal">
+          <p>Nobody knows who first bowled a ball at a stick, and cricket has never minded. The likeliest cradle is the Weald — the sheep country of Kent, Surrey and Sussex — where shepherds are said to have bowled at a wicket-gate to pass the time, which is why the sticks are still called a <em>wicket</em>, from the old French <em>guichet</em>: a little gate.</p>
+          <p>The game's first confirmed appearance in writing is <strong>1598</strong>, when a Guildford coroner named John Derrick, giving evidence in a dispute over a school plot, recalled that he and his schoolfriends had played <em>"creckett"</em> there "about fifty years since". By the 1640s the game was organised enough to be worth betting on: the earliest known organised match, played for a wager, is recorded in <strong>1646</strong>. Cricket grew up in tavern company, on village greens — eleven a side, two stumps, and the stakes in a hat.</p>
+        </div>
+        <aside class="note reveal">
+          <span class="nb">Marginalia · The first mention</span>
+          <p>Derrick's testimony of 1598 settles the game's oldest question: cricket was being played at the Royal Grammar School, Guildford, by the 1550s. Nothing older has survived in writing.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CHAPTER II ================= -->
+  <section class="chapter" id="laws" data-rail="II — The Laws" data-era="II">
+    <div class="wrap">
+      <header class="ch-head reveal">
+        <div class="ch-no">II</div>
+        <div class="ch-meta">
+          <span class="tag red ch-era">Chapter Two · 1700 – 1800</span>
+          <h2>Writing the Laws</h2>
+        </div>
+      </header>
+      <div class="ch-grid">
+        <div class="prose dropcap reveal">
+          <p>In <strong>1744</strong> the Laws of Cricket were set down for the first time: the pitch fixed at twenty-two yards, the ball weighing between five and six ounces, the umpire's word made final. They were revised in 1774 at the Star and Garter Tavern in Pall Mall — a pub, fittingly, remains the birthplace of the rulebook.</p>
+          <p>Through the 1760s and '70s the game's centre of gravity was the <strong>Hambledon Club</strong>, on Broadhalfpenny Down in Hampshire, whose eleven could beat "All-England" and drew crowds in their thousands. Then, in <strong>1787</strong>, a group of noblemen and gentlemen moved the game to Thomas Lord's new ground in Marylebone and founded the <strong>Marylebone Cricket Club</strong>. The MCC has guarded the Laws ever since — longer than most modern nations have existed.</p>
+        </div>
+        <aside class="note reveal">
+          <span class="nb">Marginalia · A third stump</span>
+          <p>In 1775 the bowler Edward "Lumpy" Stevens repeatedly beat the great John Small — only for the ball to fly clean through the two-stump wicket without touching it. A middle stump was added soon after. The bails, like the argument, have flown ever since.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CHAPTER III ================= -->
+  <section class="chapter" id="empire" data-rail="III — Empire" data-era="III">
+    <div class="wrap">
+      <header class="ch-head reveal">
+        <div class="ch-no">III</div>
+        <div class="ch-meta">
+          <span class="tag red ch-era">Chapter Three · 1800 – 1900</span>
+          <h2>Crossing oceans</h2>
+        </div>
+      </header>
+      <div class="ch-grid">
+        <div class="prose dropcap reveal">
+          <p>Cricket travelled with ships. In <strong>1844</strong>, the United States and Canada met at New York in what is often called the first international in any sport — Canada won by 23 runs, and few remember. English elevens toured North America in 1859 and Australia in 1861; in <strong>1868</strong> an Aboriginal team from western Victoria toured England, playing forty-seven matches in six months to astonished crowds.</p>
+          <p>Then the game's two defining inventions. In March <strong>1877</strong>, at the Melbourne Cricket Ground, Australia and England met in what was later recognised as the first <strong>Test match</strong>. Australia won by 45 runs; Charles Bannerman scored 165 of Australia's 245 — still the record share of a completed Test innings. Five years later came the second invention. Australia beat England at The Oval by seven runs, and a newspaper held a funeral.</p>
+        </div>
+
+        <figure class="clipping reveal">
+          <p class="cl-open">In affectionate remembrance of</p>
+          <p class="cl-name">ENGLISH CRICKET</p>
+          <p class="cl-which">which died at The Oval on 29th August, 1882</p>
+          <p class="cl-body">Deeply lamented by a large circle of sorrowing friends and acquaintances.</p>
+          <p class="cl-rip">R.I.P.</p>
+          <p class="cl-nb">N.B. — The body will be cremated and the ashes taken to Australia.</p>
+          <p class="cl-src">The Sporting Times · London · 2 Sept. 1882</p>
+        </figure>
+
+        <aside class="note reveal">
+          <span class="nb">Marginalia · The urn</span>
+          <p>When Ivo Bligh's side "reclaimed the ashes" in 1882–83, a small terracotta urn was presented — said to hold the ashes of a bail, a ball, or a lady's veil, depending on the telling. It has never been an official trophy. Teams win it, then leave it in the museum at Lord's, where it belongs to cricket rather than to either country.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CHAPTER IV ================= -->
+  <section class="chapter" id="golden" data-rail="IV — Golden Age" data-era="IV">
+    <div class="wrap">
+      <header class="ch-head reveal">
+        <div class="ch-no">IV</div>
+        <div class="ch-meta">
+          <span class="tag red ch-era">Chapter Four · 1890 – 1914</span>
+          <h2>The Golden Age</h2>
+        </div>
+      </header>
+      <div class="ch-grid">
+        <div class="prose dropcap reveal">
+          <p>Historians still argue about many things in cricket, but rarely about this: the summers before the Great War were the game's <strong>Golden Age</strong>. In 1896 at Old Trafford, K.S. Ranjitsinhji — Ranji, an Indian prince schooled at Cambridge — made 62 and 154 not out on Test debut and gave the game its most exquisite stroke, the leg glance.</p>
+          <p>In 1902, Victor Trumper walked out at Old Trafford on a rain-ruined pitch and reached a hundred before lunch on the first morning — the first man ever to do it in a Test. Australia won that match by three runs. And in Sydney Barnes, England possessed a bowler so good he took <strong>189 wickets in 27 Tests</strong> at 16.43, then went back to league cricket because it paid better. In <strong>1909</strong>, England, Australia and South Africa founded the Imperial Cricket Conference at Lord's — which, under later names, runs the world game to this day.</p>
+        </div>
+
+        <aside class="file reveal">
+          <h4>Sydney Francis Barnes</h4>
+          <p class="fc">England · 1901–1914</p>
+          <div class="frow"><span>TESTS</span><i class="ld"></i><b>27</b></div>
+          <div class="frow"><span>WICKETS</span><i class="ld"></i><b>189</b></div>
+          <div class="frow"><span>BOWLING AVG.</span><i class="ld"></i><b>16.43</b></div>
+          <div class="frow"><span>BEST INNINGS</span><i class="ld"></i><b>9 / 103</b></div>
+          <p class="fnote">Took 49 wickets in the 1901–02 Ashes — still the record for a five-Test series. Genius, they said, with a grudge attached.</p>
+        </aside>
+
+        <aside class="note reveal">
+          <span class="nb">Marginalia · Before lunch</span>
+          <p>Trumper's hundred before lunch at Old Trafford, 1902, remained the stuff of legend for a century. He batted, contemporaries wrote, "like a runner in an Olympic final" — a silk hat, it was said, was never safe near him, for he celebrated with it aloft.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CHAPTER V ================= -->
+  <section class="chapter" id="don" data-rail="V — The Don" data-era="V">
+    <div class="wrap">
+      <header class="ch-head reveal">
+        <div class="ch-no">V</div>
+        <div class="ch-meta">
+          <span class="tag red ch-era">Chapter Five · 1928 – 1948</span>
+          <h2>The Don &amp; the Bodyline storm</h2>
+        </div>
+      </header>
+      <div class="ch-grid">
+        <div class="prose dropcap reveal">
+          <p>Donald Bradman's first Ashes series, in 1928–29, began with 18 and 1 and a dropped from the side. It was the last kindness England would be shown. In <strong>1930</strong> he answered with 974 runs in a single series — a record that still stands — including 334 at Leeds, 309 of them in one day.</p>
+          <p>England's reply was <strong>Bodyline</strong>: the 1932–33 tour under Douglas Jardine, with Harold Larwood bowling fast, short and at the bodies of Australian batsmen. It took the series, cost Larwood his career, cabled telegrams between prime ministers, and forced the Laws to be rewritten. It also produced the most famous sentence an Australian captain ever spoke:</p>
+        </div>
+
+        <figure class="quote reveal">
+          <blockquote>"There are two teams out there. One is playing cricket. The other is not."</blockquote>
+          <figcaption>W.A. "Bill" Woodfull, to the English manager, Adelaide, January 1933</figcaption>
+        </figure>
+
+        <div class="prose dropcap reveal" style="margin-top:42px">
+          <p>War stopped play from 1939 to 1945. When cricket resumed, Bradman returned to lead the <strong>Invincibles</strong> of 1948 through England unbeaten. At The Oval, in his last innings, he walked in needing four runs to retire with a Test average of exactly 100. He was bowled by Eric Hollies for a duck — second ball. The crowd stood anyway. <strong>99.94</strong> it remained, and remains, the most stubborn number in sport.</p>
+        </div>
+
+        <aside class="file reveal">
+          <h4>Sir Donald Bradman</h4>
+          <p class="fc">Australia · 1928–1948</p>
+          <div class="frow"><span>TESTS</span><i class="ld"></i><b>52</b></div>
+          <div class="frow"><span>RUNS</span><i class="ld"></i><b>6,996</b></div>
+          <div class="frow"><span>AVERAGE</span><i class="ld"></i><b>99.94</b></div>
+          <div class="frow"><span>CENTURIES</span><i class="ld"></i><b>29</b></div>
+          <div class="frow"><span>HIGHEST</span><i class="ld"></i><b>334</b></div>
+          <p class="fnote">Australia won the last Test he played by an innings and 149 runs. He made a duck. It barely mattered.</p>
+        </aside>
+
+        <aside class="note reveal">
+          <span class="nb">Marginalia · The figure, explained</span>
+          <p>6,996 runs across 80 innings, ten times not out: 99.94. Had he made a hundred that afternoon at The Oval, the average would have risen to 101.37. He called it a "paradox" — a duck that made him more human, and the number more immortal.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= THE CHASM ================= -->
+  <section class="interlude" id="chasm" data-rail="✳ — The Chasm">
+    <div class="wrap">
+      <div class="int-head reveal">
+        <span class="tag green int-kicker">A Statistical Interlude</span>
+        <h2>The Chasm</h2>
+        <p class="int-lede">Sixty is genius. Seventy is legend. Then there is 99.94 — and below it, everyone else in the history of Test cricket, crowded together in the fifties and sixties, closer to each other than any of them will ever be to the Don.</p>
+      </div>
+
+      <div class="chart reveal" id="chart">
+        <div class="marker">
+          <span class="mtag">next best · 61.87</span>
+        </div>
+        <div class="crow hero-row"><span class="name">D. G. Bradman · Aus</span><div class="track"><span class="bar" style="--w:99.94%;transition-delay:.05s"></span></div><span class="val">99.94</span></div>
+        <div class="crow"><span class="name">A. J. Voges · Aus</span><div class="track"><span class="bar" style="--w:61.87%;transition-delay:.15s"></span></div><span class="val">61.87</span></div>
+        <div class="crow"><span class="name">G. A. Pollock · SA</span><div class="track"><span class="bar" style="--w:60.97%;transition-delay:.22s"></span></div><span class="val">60.97</span></div>
+        <div class="crow"><span class="name">G. Headley · WI</span><div class="track"><span class="bar" style="--w:60.83%;transition-delay:.29s"></span></div><span class="val">60.83</span></div>
+        <div class="crow"><span class="name">K. Barrington · Eng</span><div class="track"><span class="bar" style="--w:58.67%;transition-delay:.36s"></span></div><span class="val">58.67</span></div>
+        <div class="crow"><span class="name">W. R. Hammond · Eng</span><div class="track"><span class="bar" style="--w:58.45%;transition-delay:.43s"></span></div><span class="val">58.45</span></div>
+        <div class="crow"><span class="name">G. S. A. Sobers · WI</span><div class="track"><span class="bar" style="--w:57.78%;transition-delay:.5s"></span></div><span class="val">57.78</span></div>
+        <div class="crow"><span class="name">K. C. Sangakkara · SL</span><div class="track"><span class="bar" style="--w:57.40%;transition-delay:.57s"></span></div><span class="val">57.40</span></div>
+        <div class="crow"><span class="name">J. B. Hobbs · Eng</span><div class="track"><span class="bar" style="--w:56.94%;transition-delay:.64s"></span></div><span class="val">56.94</span></div>
+        <div class="crow"><span class="name">L. Hutton · Eng</span><div class="track"><span class="bar" style="--w:56.67%;transition-delay:.71s"></span></div><span class="val">56.67</span></div>
+      </div>
+
+      <p class="chart-note reveal">Highest career batting averages in Test history — minimum twenty innings; all ten men retired. The gap between first and second is the widest in any major sport.</p>
+    </div>
+  </section>
+
+  <!-- ================= CHAPTER VI ================= -->
+  <section class="chapter" id="oneday" data-rail="VI — One-Day" data-era="VI">
+    <div class="wrap">
+      <header class="ch-head reveal">
+        <div class="ch-no">VI</div>
+        <div class="ch-meta">
+          <span class="tag red ch-era">Chapter Six · 1950 – 1979</span>
+          <h2>One-day thunder</h2>
+        </div>
+      </header>
+      <div class="ch-grid">
+        <div class="prose dropcap reveal">
+          <p>The post-war decades belonged to long afternoons. In 1958, Gary Sobers — twenty-one years old — hit <strong>365 not out</strong> at Kingston and the record for the highest Test innings stood for thirty-six years. But the times were about to hurry.</p>
+          <p>On <strong>5 January 1971</strong>, after rain had eaten the first three days of a Melbourne Test, the authorities improvised a forty-over match instead. Admission was free. Australia won, nobody quite knew what had been invented, and the players wore whites and used a red ball all the same. Four years later came the first <strong>Cricket World Cup</strong> — the West Indies, Clive Lloyd's 102, three Australian run-outs, and a new world champion at Lord's.</p>
+          <p>Then, in <strong>1977</strong>, an Australian television magnate named Kerry Packer signed the world's best players in secret and founded <strong>World Series Cricket</strong>. Courts were fought, players banned, reputations burned — and by the time peace was signed in 1979, the game had floodlights, coloured clothing, white balls and a camera at the end of a lens. The modern spectacle, for better and worse, had arrived.</p>
+        </div>
+        <aside class="note reveal">
+          <span class="nb">Marginalia · An accident of weather</span>
+          <p>The first one-day international was an accident — a rain substitute improvised in Melbourne, with eight-ball overs and free entry. John Edrich top-scored with 82. Nobody in the ground that day knew they were attending the birth of a format that would one day decide world championships.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CHAPTER VII ================= -->
+  <section class="chapter" id="world" data-rail="VII — The World" data-era="VII">
+    <div class="wrap">
+      <header class="ch-head reveal">
+        <div class="ch-no">VII</div>
+        <div class="ch-meta">
+          <span class="tag red ch-era">Chapter Seven · 1980 – 2000</span>
+          <h2>The world takes over</h2>
+        </div>
+      </header>
+      <div class="ch-grid">
+        <div class="prose dropcap reveal">
+          <p>On 25 June <strong>1983</strong>, Kapil Dev lifted the World Cup at Lord's. His India side had been 17 for 5 against Zimbabwe a fortnight earlier — Kapil answered with an unbeaten 175 — and in the final they felled the invincible West Indies by 43 runs. In India, a sport was ratified as a religion.</p>
+          <p>The map kept widening: Sri Lanka earned Test status in 1982; South Africa returned, after apartheid's exile, in 1991. In 1993, Shane Warne's first Ashes delivery drifted, ripped back and clipped Mike Gatting's off bail — cricket had a new folklore. Brian Lara made <strong>375</strong> at Antigua in 1994, then <strong>400 not out</strong> a decade later. And Sachin Tendulkar, who debuted at sixteen in 1989, would retire in 2013 with <strong>15,921 Test runs</strong> from 200 matches — numbers from a different order of devotion.</p>
+        </div>
+
+        <aside class="file reveal">
+          <h4>Muttiah Muralitharan</h4>
+          <p class="fc">Sri Lanka · 1992–2010</p>
+          <div class="frow"><span>TESTS</span><i class="ld"></i><b>133</b></div>
+          <div class="frow"><span>WICKETS</span><i class="ld"></i><b>800</b></div>
+          <div class="frow"><span>BOWLING AVG.</span><i class="ld"></i><b>22.72</b></div>
+          <div class="frow"><span>FIVE-WICKET HAULS</span><i class="ld"></i><b>67</b></div>
+          <div class="frow"><span>BEST INNINGS</span><i class="ld"></i><b>9 / 51</b></div>
+          <p class="fnote">Took exactly the eight wickets he needed, in his final Test, to finish on 800 — then set the ball down and walked off a Test match for the last time.</p>
+        </aside>
+
+        <aside class="note reveal">
+          <span class="nb">Marginalia · Ball of the century</span>
+          <p>Old Trafford, 4 June 1993. Warne's first delivery in Ashes cricket pitched a foot outside leg stump, drifted through the air, ripped off the pitch, and clipped the off bail. Gatting stared at the pitch. The umpire raised his finger. Commentary called it the Ball of the Century; nobody has bettered the name.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= INTERLUDE: THE OTHER HALF ================= -->
+  <section class="interlude" id="otherhalf" data-rail="✳ — The Other Half">
+    <div class="wrap">
+      <div class="int-head reveal">
+        <span class="tag green int-kicker">
+          <svg width="16" height="20" viewBox="0 0 24 30" aria-hidden="true"><use href="#i-stumps"/></svg>
+          An Interlude · The Other Half
+        </span>
+        <h2>The women's game</h2>
+        <p class="int-lede">Cricket history is usually told with half the players missing. It shouldn't be. The women's game is older than most of its records, and it invented the World Cup.</p>
+      </div>
+      <div class="ch-grid" style="margin-top:40px">
+        <div class="prose dropcap reveal">
+          <p>The earliest known women's match was reported in <strong>1745</strong> — "eleven maids of Bramley" against "eleven maids of Hambledon", a local paper noted, dressed in white and playing for a barrel of ale? for certain, for honour. The <strong>Women's Cricket Association</strong> formed in 1926; in <strong>1934</strong>, England and Australia contested the first women's Test match, and the Women's Ashes began their own quiet rivalry.</p>
+          <p>And in <strong>1973</strong> — two years before the men — came the first Cricket World Cup of any kind: a women's tournament in England, won by the home side, driven through largely by one person. Captain, prime mover, and later a member of the House of Lords: <strong>Rachel Heyhoe Flint</strong>, cricketer, and cricket's great persuader.</p>
+        </div>
+        <aside class="note reveal">
+          <span class="nb">Marginalia · Two sports, one athlete</span>
+          <p>Australia's Ellyse Perry is the only athlete to have represented her country at both a cricket and a football World Cup — the cricket World Cup in 2009, the football World Cup in 2011 — and then became, arguably, the finest all-rounder either sport has seen.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CHAPTER VIII ================= -->
+  <section class="chapter" id="t20" data-rail="VIII — T20" data-era="VIII">
+    <div class="wrap">
+      <header class="ch-head reveal">
+        <div class="ch-no">VIII</div>
+        <div class="ch-meta">
+          <span class="tag red ch-era">Chapter Eight · 2003 – Today</span>
+          <h2>The T20 century</h2>
+        </div>
+      </header>
+      <div class="ch-grid">
+        <div class="prose dropcap reveal">
+          <p>In <strong>2003</strong>, English county cricket — facing dwindling crowds — invented <strong>Twenty20</strong>: twenty overs a side, three hours, fireworks. The first international followed in 2005, when a few New Zealanders took the field in retro kits and false moustaches, sending the format up even as they made history. By <strong>2008</strong>, the Indian Premier League had turned cricketers into global assets and reshaped every calendar on earth.</p>
+          <p>Meanwhile the oldest format refused to die. The World Test Championship gave five-day cricket a crown; pink balls brought it into the night; and England's brazen declarations of the 2020s — "Bazball", if you must — proved the longest game could still surprise. Its proof of life came in <strong>2019</strong>, when a World Cup final ended level after a hundred overs, level again after the Super Over, and was finally settled by counting boundaries. Cricket's most dramatic day, and its most bureaucratic ending, in one afternoon at Lord's.</p>
+        </div>
+        <aside class="note reveal">
+          <span class="nb">Marginalia · Settled by arithmetic</span>
+          <p>14 July 2019: England 241 all out; New Zealand 241 all out; Super Over 15 each. England won on boundaries scored — 26 to 17. For the first time, a World Cup was decided by a count. Even the scorer, that day, was a kingmaker.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= APPENDIX A: CHRONOLOGY ================= -->
+  <section class="appendix" id="chronology" data-rail="A — Chronology">
+    <div class="wrap">
+      <div class="app-head reveal">
+        <span class="tag red">Appendix A</span>
+        <h2>A chronology of firsts</h2>
+      </div>
+      <div class="chron reveal">
+        <div class="chron-row"><span class="y">1598</span><span class="ev">First written mention — <b>"creckett"</b> at Guildford</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">1646</span><span class="ev">Earliest known organised match, played for a wager</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">1744</span><span class="ev">First <b>Laws of Cricket</b> codified</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">1787</span><span class="ev">The <b>Marylebone Cricket Club</b> founded at Lord's</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">1844</span><span class="ev">First international — <b>USA v Canada</b>, New York</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">1868</span><span class="ev">Aboriginal team from Australia tours England</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">1877</span><span class="ev">First <b>Test match</b> — Australia v England, Melbourne</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">1882</span><span class="ev"><b>The Ashes</b> born at The Oval</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">1909</span><span class="ev">Imperial Cricket Conference founded at Lord's</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">1928</span><span class="ev">West Indies play their first Test, at Lord's</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">1934</span><span class="ev">First <b>women's Test</b> — England v Australia</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">1971</span><span class="ev">First <b>one-day international</b>, Melbourne</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">1973</span><span class="ev">First Cricket <b>World Cup</b> — the women's, won by England</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">1975</span><span class="ev">First men's World Cup — won by the West Indies</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">1977</span><span class="ev"><b>World Series Cricket</b> rewires the game</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">1983</span><span class="ev">India lift the World Cup at Lord's</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">2003</span><span class="ev"><b>Twenty20</b> launched by England's counties</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">2015</span><span class="ev">First day-night Test, Adelaide — with the pink ball</span><i class="ld"></i></div>
+        <div class="chron-row"><span class="y">2019</span><span class="ev">World Cup final tied twice; England win on boundaries</span><i class="ld"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= APPENDIX B: THE LEDGER ================= -->
+  <section class="interlude" id="records" data-rail="B — The Ledger">
+    <div class="wrap">
+      <div class="int-head reveal">
+        <span class="tag green int-kicker">Appendix B</span>
+        <h2>The ledger</h2>
+        <p class="int-lede">Four numbers the game measures everyone against, counted out below.</p>
+      </div>
+      <div class="ledger">
+        <div class="lrow reveal">
+          <span class="num" data-count="15921" data-format="comma">0</span>
+          <div><span class="what">Most Test Runs</span><span class="who">Sachin Tendulkar — 200 Tests, India, 1989–2013</span></div>
+        </div>
+        <div class="lrow reveal">
+          <span class="num" data-count="800">0</span>
+          <div><span class="what">Most Test Wickets</span><span class="who">Muttiah Muralitharan — 133 Tests, Sri Lanka, 1992–2010</span></div>
+        </div>
+        <div class="lrow reveal">
+          <span class="num" data-count="99.94" data-decimals="2">0</span>
+          <div><span class="what">Best Test Batting Average</span><span class="who">Sir Donald Bradman — 52 Tests, Australia, 1928–1948</span></div>
+        </div>
+        <div class="lrow reveal">
+          <span class="num" data-count="400" data-suffix="*">0</span>
+          <div><span class="what">Highest Test Innings</span><span class="who">Brian Lara — v England, Antigua, 2004</span></div>
+        </div>
+      </div>
+      <p class="ledger-foot reveal">And for the bowlers' book of hours: ten wickets in a single innings has fallen just three times — Jim Laker (10/53, 1956), Anil Kumble (10/74, 1999), and Ajaz Patel (10/119, 2021), born in Mumbai, who took his at the Wankhede.</p>
+    </div>
+  </section>
+
+  <!-- ================= POSTSCRIPT: THE FINAL OVER ================= -->
+  <section class="quiz-sec" id="finalover" data-rail="✠ — The Final Over">
+    <div class="wrap">
+      <div class="quiz">
+        <div class="quiz-head">
+          <span class="tag red">Postscript</span>
+          <h2>The Final Over</h2>
+          <div class="overline" id="overline" aria-hidden="true"></div>
+          <span class="tag" style="display:block;margin-top:14px">Six questions · One over · No reviews</span>
+        </div>
+        <div class="quiz-stage" id="quizStage" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= COLOPHON ================= -->
+<footer>
+  <div class="wrap">
+    <svg viewBox="0 0 24 30" aria-hidden="true"><use href="#i-stumps"/></svg>
+    <p class="foot-title">The Long Game</p>
+    <p class="foot-meta">Compiled as a single file · Set in Fraunces, Newsreader &amp; IBM Plex Mono</p>
+    <p class="foot-note">No trackers, no cookies — only the track of the ball. All figures as recorded; history, like the umpire, may overrule.</p>
+    <a class="foot-up" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+      Back to the first ball
+      <svg width="14" height="14" viewBox="0 0 24 24"><use href="#i-arrow"/></svg>
+    </a>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   THE LONG GAME — behaviour
+   ============================================================ */
+(function(){
+  "use strict";
+  var root = document.documentElement;
+  var vh = function(){ return window.innerHeight; };
+
+  /* ---------- Day / Night (floodlights) ---------- */
+  var sw = document.getElementById('themeSwitch');
+  var swLabel = document.getElementById('swLabel');
+  function applyTheme(t){
+    root.setAttribute('data-theme', t);
+    sw.setAttribute('aria-checked', t === 'night' ? 'true' : 'false');
+    swLabel.textContent = t === 'night' ? 'Night match' : 'Day match';
+  }
+  try{ var saved = localStorage.getItem('tg-theme'); if(saved) applyTheme(saved); }catch(e){}
+  sw.addEventListener('click', function(){
+    var next = root.getAttribute('data-theme') === 'night' ? 'day' : 'night';
+    applyTheme(next);
+    try{ localStorage.setItem('tg-theme', next); }catch(e){}
+  });
+
+  /* ---------- estimated reading time ---------- */
+  var rt = document.getElementById('readtime');
+  function readtime(){
+    var words = (document.querySelector('main').innerText || '').trim().split(/\s+/).length;
+    rt.textContent = Math.max(1, Math.round(words / 200));
+  }
+
+  /* ---------- hero plate: wagon-wheel strokes ---------- */
+  var wheel = document.getElementById('wheel');
+  // angles & lengths read like shots to various parts of the ground
+  [ [38,250],[64,196],[92,250],[117,168],[141,250],[166,204],
+    [192,250],[217,152],[243,250],[268,198],[294,250],[321,180],[348,250] ].forEach(function(a){
+    var rad = a[0] * Math.PI / 180;
+    var line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', 300 + Math.cos(rad)*34);
+    line.setAttribute('y1', 300 + Math.sin(rad)*34);
+    line.setAttribute('x2', 300 + Math.cos(rad)*a[1]);
+    line.setAttribute('y2', 300 + Math.sin(rad)*a[1]);
+    wheel.appendChild(line);
+  });
+
+  /* ---------- hero plate: give the ball a turn ---------- */
+  var spin = document.getElementById('ballSpin');
+  var rot = 0;
+  function spinIt(){ rot += 360; spin.style.transform = 'rotate(' + rot + 'deg)'; }
+  var plate = document.getElementById('plate');
+  plate.addEventListener('click', spinIt);
+  plate.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); spinIt(); }
+  });
+
+  /* ---------- reveal on scroll ---------- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { threshold: .12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+  /* ---------- the chasm: animate bars when seen ---------- */
+  var chart = document.getElementById('chart');
+  var cio = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ chart.classList.add('in'); cio.unobserve(chart); }
+    });
+  }, { threshold: .25 });
+  cio.observe(chart);
+
+  /* ---------- ledger counters ---------- */
+  function animateNum(el){
+    var target = parseFloat(el.getAttribute('data-count'));
+    var dec = parseInt(el.getAttribute('data-decimals') || '0', 10);
+    var suffix = el.getAttribute('data-suffix') || '';
+    var comma = el.getAttribute('data-format') === 'comma';
+    var t0 = null, dur = 1400;
+    function frame(t){
+      if(!t0) t0 = t;
+      var p = Math.min(1, (t - t0) / dur);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var val = target * eased;
+      var text = dec ? val.toFixed(dec) : Math.round(val).toLocaleString('en-US');
+      if(comma) text = Math.round(val).toLocaleString('en-US');
+      el.textContent = text + suffix;
+      if(p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  var nio = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ animateNum(en.target); nio.unobserve(en.target); }
+    });
+  }, { threshold: .5 });
+  document.querySelectorAll('.num').forEach(function(el){ nio.observe(el); });
+
+  /* ---------- era rail: stops, ball, scroll-spy ---------- */
+  var track = document.getElementById('railTrack');
+  var fill = document.getElementById('railFill');
+  var ball = document.getElementById('railBall');
+  var sections = Array.prototype.slice.call(document.querySelectorAll('[data-rail]'));
+  var stops = [];
+
+  sections.forEach(function(sec, i){
+    var b = document.createElement('button');
+    b.className = 'stop';
+    b.setAttribute('aria-label', 'Go to ' + sec.getAttribute('data-rail'));
+    var dot = document.createElement('i');
+    var tip = document.createElement('span');
+    tip.className = 'tip';
+    tip.textContent = sec.getAttribute('data-rail');
+    b.appendChild(dot); b.appendChild(tip);
+    b.addEventListener('click', function(){
+      window.scrollTo({ top: sec.offsetTop - 70, behavior: 'smooth' });
+    });
+    track.appendChild(b);
+    stops.push(b);
+  });
+
+  function maxScroll(){ return Math.max(1, root.scrollHeight - vh()); }
+  function positionStops(){
+    var m = maxScroll();
+    sections.forEach(function(sec, i){
+      var f = (sec.offsetTop - vh() * 0.45) / m;
+      f = Math.max(0, Math.min(1, f));
+      stops[i].style.top = (f * 100) + '%';
+    });
+  }
+
+  var ticking = false;
+  function onScroll(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      var y = window.scrollY || root.scrollTop;
+      var m = maxScroll();
+      var pct = Math.max(0, Math.min(1, y / m));
+      document.getElementById('progress').style.width = (pct * 100) + '%';
+      // rail ball & fill
+      ball.style.top = (pct * 100) + '%';
+      fill.style.height = (pct * 100) + '%';
+      // active chapter
+      var cur = 0;
+      for(var i = 0; i < sections.length; i++){
+        if(sections[i].offsetTop - vh() * 0.45 <= y) cur = i;
+      }
+      stops.forEach(function(s, i){ s.classList.toggle('active', i === cur); });
+      ticking = false;
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function(){ positionStops(); onScroll(); });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(positionStops);
+  positionStops(); onScroll(); readtime();
+
+  /* ============================================================
+     THE FINAL OVER — quiz
+     ============================================================ */
+  var QUIZ = [
+    { q: "The first Test match was played in 1877 — at which ground?",
+      opts: ["Lord's, London", "Melbourne Cricket Ground", "The Oval, London", "Newlands, Cape Town"], a: 1,
+      note: "Australia beat England by 45 runs on 19 March 1877. Charles Bannerman scored 165 of Australia's 245 — still the record share of an innings." },
+    { q: "Who bowled the 'Ball of the Century' to Mike Gatting in 1993?",
+      opts: ["Muttiah Muralitharan", "Malcolm Marshall", "Shane Warne", "Derek Underwood"], a: 2,
+      note: "Warne's first-ever Ashes delivery: drifted out from the leg side, ripped back off the pitch, and clipped the off bail." },
+    { q: "The Ashes were born from a mock obituary in which publication?",
+      opts: ["Wisden Cricketers' Almanack", "The Times", "The Sporting Times", "Punch"], a: 2,
+      note: "The Sporting Times, 2 September 1882. England toured Australia that winter to 'recover the ashes' — and the rivalry got its name." },
+    { q: "Which Cricket World Cup came first — the men's or the women's?",
+      opts: ["Women's — 1973", "Men's — 1975", "Both — 1975", "Women's — 1971"], a: 0,
+      note: "The women's World Cup, in England in 1973, beat the men's by two years. Rachel Heyhoe Flint drove the whole idea through." },
+    { q: "In his final Test innings, Don Bradman needed how many runs to finish with an average of exactly 100?",
+      opts: ["2", "4", "7", "12"], a: 1,
+      note: "He was bowled second ball for a duck at The Oval, 1948. The average stayed at 99.94 — the crowd rose to him anyway." },
+    { q: "The first day-night Test, at Adelaide in 2015, was played with which ball?",
+      opts: ["White", "Red", "Pink", "Yellow"], a: 2,
+      note: "The pink ball — Australia beat New Zealand by three wickets under lights. Press the floodlight switch above and this page turns pink too." }
+  ];
+  var RATINGS = {
+    6: "A match-winning century", 5: "A captain's knock", 4: "A patient fifty",
+    3: "Tail-end resistance", 2: "An early lbw", 1: "A golden duck", 0: "The dreaded pair"
+  };
+  var KEYS = ["A", "B", "C", "D"];
+  var stage = document.getElementById('quizStage');
+  var overline = document.getElementById('overline');
+  var qi = 0, score = 0, results = [];
+
+  function drawOverline(){
+    overline.innerHTML = '';
+    for(var i = 0; i < 6; i++){
+      var d = document.createElement('span');
+      d.className = 'od';
+      if(results[i] === true) d.classList.add('ok');
+      else if(results[i] === false) d.classList.add('bad');
+      else if(i === qi) d.classList.add('cur');
+      overline.appendChild(d);
+    }
+  }
+
+  function icon(name){ return '<svg aria-hidden="true"><use href="#i-' + name + '"/></svg>'; }
+
+  function renderQuestion(){
+    drawOverline();
+    var item = QUIZ[qi];
+    var html = '<span class="tag red q-count">Ball ' + (qi + 1) + ' of 6</span>';
+    html += '<p class="q-text">' + item.q + '</p><div class="opts">';
+    item.opts.forEach(function(o, i){ html += '<button type="button" class="opt" data-i="' + i + '"><span class="k">' + KEYS[i] + '</span>' + o + '</button>'; });
+    html += '</div><div class="q-note" id="qNote"></div>';
+    html += '<button type="button" class="q-next" id="qNext">' + (qi === 5 ? 'Draw stumps' : 'Next ball') + ' ' + icon('arrow') + '</button>';
+    stage.innerHTML = html;
+
+    var buttons = stage.querySelectorAll('.opt');
+    buttons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var pick = parseInt(btn.getAttribute('data-i'), 10);
+        var correct = pick === item.a;
+        results[qi] = correct;
+        if(correct) score++;
+        buttons.forEach(function(b){
+          b.disabled = true;
+          var idx = parseInt(b.getAttribute('data-i'), 10);
+          if(idx === item.a){ b.classList.add('good'); b.insertAdjacentHTML('beforeend', icon('check')); }
+          else if(idx === pick){ b.classList.add('badpick'); b.insertAdjacentHTML('beforeend', icon('x')); }
+        });
+        var note = document.getElementById('qNote');
+        note.textContent = item.note;
+        note.classList.add('show');
+        document.getElementById('qNext').classList.add('show');
+        drawOverline();
+      });
+    });
+    document.getElementById('qNext').addEventListener('click', function(){
+      qi++;
+      if(qi < QUIZ.length) renderQuestion();
+      else renderScorecard();
+    });
+  }
+
+  function renderScorecard(){
+    drawOverline();
+    var out = score >= 4 ? "NOT OUT" : "OUT";
+    var outCls = score >= 4 ? "" : " red";
+    stage.innerHTML =
+      '<div class="scorecard">' +
+        '<span class="sc-title">Umpire\'s Scorecard</span>' +
+        '<div class="sc-box">' +
+          '<div class="sc-row"><span>BATTER</span><i class="ld"></i><b>The Reader</b></div>' +
+          '<div class="sc-row"><span>RUNS</span><i class="ld"></i><b>' + score + ' <span style="font-size:.8rem;color:var(--ink-2)">(6 balls)</span></b></div>' +
+          '<div class="sc-row"><span>STATUS</span><i class="ld"></i><b class="red">' + RATINGS[score] + '</b></div>' +
+          '<div class="sc-row"><span>DECISION</span><i class="ld"></i><b class="' + outCls.trim() + '">' + out + '</b></div>' +
+        '</div>' +
+        '<p class="sc-verdict">' + (score >= 5 ? "Take a bow — and a lap of the boundary."
+          : score >= 3 ? "Solid. The selectors will be in touch."
+          : "Every great innings starts with a first ball. Go again.") + '</p>' +
+        '<button type="button" class="q-next show q-again" id="qAgain">Another over ' + icon('arrow') + '</button>' +
+      '</div>';
+    document.getElementById('qAgain').addEventListener('click', function(){
+      qi = 0; score = 0; results = []; renderQuestion();
+    });
+  }
+
+  renderQuestion();
+})();
+</script>
+</body>
+</html>
